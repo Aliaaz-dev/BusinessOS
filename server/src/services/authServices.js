@@ -97,21 +97,41 @@ const register = async (data) => {
 const login = async (data) => {
     const { email, password } = data;
 
-    const user = await User.findOne({ email, password });
+    const user = await User.findOne({ email }).populate("business");
 
     if (!user) {
         throw new Error("Invalid email or password");
     }
 
     const isPasswordCorrect = await bcrypt.compare(
-    password,
-    user.password
-);
+        password,
+        user.password
+    );
+
     if (!isPasswordCorrect) {
         throw new Error("Invalid email or password");
     }
 
-    return user;
+    const token = jwt.sign(
+        {
+            id: user._id,
+            role: user.role,
+            business: user.business._id,
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_EXPIRES_IN,
+        }
+    );
+
+    const userObject = user.toObject();
+    delete userObject.password;
+
+    return {
+        message: "Login successful",
+        token,
+        user: userObject,
+    };
 };
 
 module.exports = {

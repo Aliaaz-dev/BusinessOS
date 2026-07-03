@@ -4,49 +4,29 @@ const register = async (req, res) => {
     try {
         const result = await authService.register(req.body);
 
-        return res.status(201).json(result);
+        res.status(201).json(result);
 
     } catch (error) {
-
-        return res.status(500).json({
-            success: false,
-            message: error.message || "Internal Server Error"
+        res.status(500).json({
+            message: error.message,
         });
-
     }
 };
 
-const login = async (data) => {
-    const { email, password } = data;
+const login = async (req, res) => {
+    try {
+        const result = await authService.login(req.body);
 
-    // Find user
-    const user = await User.findOne({ email }).populate("business");
+        res.status(200).json(result);
 
-    if (!user) {
-        throw new Error("Invalid email or password");
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
     }
-
-    // Compare password
-    const isPasswordCorrect = await bcrypt.compare(
-        password,
-        user.password
-    );
-
-    if (!isPasswordCorrect) {
-        throw new Error("Invalid email or password");
-    }
-
-    // Remove password before returning
-    const userObject = user.toObject();
-    delete userObject.password;
-
-    return {
-        message: "Login successful",
-        user: userObject,
-    };
 };
 
 module.exports = {
     register,
-    login
+    login,
 };
