@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const Business = require("../models/business");
 const User = require("../models/user");
@@ -81,9 +82,15 @@ const register = async (data) => {
         // Commit transaction
         await session.commitTransaction();
 
+        const businessObject = newBusiness.toObject();
+        const ownerObject = newOwner.toObject();
+
+        delete ownerObject.password;
+
         return {
-            business: newBusiness,
-            owner: newOwner,
+            message: "Registration successful",
+            business: businessObject,
+            owner: ownerObject,
         };
 
     } catch (error) {
@@ -94,10 +101,13 @@ const register = async (data) => {
     }
 };
 
+
 const login = async (data) => {
     const { email, password } = data;
 
-    const user = await User.findOne({ email }).populate("business");
+   const user = await User.findOne({ email })
+    .select("+password")
+    .populate("business", "name");
 
     if (!user) {
         throw new Error("Invalid email or password");
@@ -120,12 +130,18 @@ const login = async (data) => {
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: process.env.JWT_EXPIRES_IN,
+            expiresIn: "1d",
         }
     );
 
     const userObject = user.toObject();
+
     delete userObject.password;
+
+    userObject.business = {
+        _id: user.business._id,
+        name: user.business.name,
+    };
 
     return {
         message: "Login successful",
