@@ -14,7 +14,7 @@ const authMiddleware = async (req, res, next) => {
         return res.status(401).json({
             message: "Unauthorized. Invalid token format.",
         });
-    }
+    } 
 
     const token = authHeader.split(" ")[1];
 
