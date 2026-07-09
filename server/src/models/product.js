@@ -28,13 +28,11 @@ const productSchema = new mongoose.Schema({
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-        required: [true, "Product category is required"]
+        ref: "Category"
     },
     supplier: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Supplier",
-        required: [true, "Product supplier is required"],
+        ref: "Supplier"
     },
     brand: {
         type: String,

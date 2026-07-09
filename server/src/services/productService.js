@@ -1,4 +1,3 @@
-const product = await ProductService.createProduct(req.user, req.body); 
 const Product = require("../models/product");
 
 const createProduct = async(user, productData) => {
@@ -69,8 +68,8 @@ const createProduct = async(user, productData) => {
 
 module.exports = {
     createProduct,
-    getProducts,
-    getProductById,
-    updateProduct,
-    archiveProduct
+    // getProducts,
+    // getProductById,
+    // updateProduct,
+    // archiveProduct
 };
