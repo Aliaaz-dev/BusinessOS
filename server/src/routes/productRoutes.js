@@ -18,11 +18,11 @@ router.post(
     ProductController.createProduct
 );
 
-// router.get(
-//     "/",
-//     authMiddleware,
-//     ProductController.getProducts
-// );
+router.get(
+    "/",
+    authMiddleware,
+    ProductController.getProducts
+);
 
 // router.get(
 //     "/:id",
