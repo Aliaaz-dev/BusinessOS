@@ -23,14 +23,15 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
     try {
-        const products = await ProductService.getProducts(
+        const result = await ProductService.getProducts(
             req.user,
             req.query
         );
 
         res.status(200).json({
             success: true,
-            ...products
+            message: "Product retrieved successfully",
+            data: result
         });
 
     } catch (error) {
@@ -42,5 +43,6 @@ const getProducts = async (req, res) => {
 };
 
 module.exports = {
-    createProduct
+    createProduct,
+    getProducts
 };

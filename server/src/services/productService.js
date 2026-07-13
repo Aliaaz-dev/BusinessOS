@@ -76,7 +76,8 @@ const getProducts = async (user, query) => {
     limit = "10",
     search = "",
     status = "",
-    sort = ""
+    sort = "",
+    order = "desc"
     } = query;
 
     const pageNumber = Number(page);
@@ -100,19 +101,18 @@ const getProducts = async (user, query) => {
         ];
     }
 
-    let sortOption = { createdAt: -1 };
+    const sortFields = {
+        name: "name",
+        price: "sellingPrice",
+        stock: "currentStock",
+        created: "createdAt"
+    };
 
-    if (sort === "name") {
-        sortOption = { name: 1 };
-    }
+    const sortOrder = order === "desc" ? -1: 1;
 
-    if (sort === "price") {
-        sortOption = { sellingPrice: 1 };
-    }
-
-    if (sort === "stock") {
-        sortOption = { currentStock: 1 };
-    }
+    const sortOption = {
+        [sortFields[sort] || "createdAt"]: sortOrder
+    };
 
     const products = await Product.find(filter)
         .sort(sortOption)
