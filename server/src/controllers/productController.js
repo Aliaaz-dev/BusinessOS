@@ -42,7 +42,29 @@ const getProducts = async (req, res) => {
     }
 };
 
+const getProductById = async (req, res) => {
+    try {
+        const product = await ProductService.getProductById(
+            req.user,
+            req.params.id
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Product retrieved successfully.",
+            data: product
+        });
+
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createProduct,
-    getProducts
+    getProducts,
+    getProductById
 };
