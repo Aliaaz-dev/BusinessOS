@@ -24,11 +24,11 @@ router.get(
     ProductController.getProducts
 );
 
-// router.get(
-//     "/:id",
-//     authMiddleware,
-//     ProductController.getProductById
-// );
+router.get(
+    "/:id",
+    authMiddleware,
+    ProductController.getProductById
+);
 
 // router.put(
 //     "/:id",

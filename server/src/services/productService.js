@@ -129,10 +129,24 @@ const getProducts = async (user, query) => {
     };
 };
 
+{/* ---------------------------------Get Product By ID---------------------------------------- */}
+const getProductById = async (user, id) => {
+    const product = await Product.findOne({
+        _id: id,
+        business: user.business
+    });
+
+    if (!product) {
+        throw new Error("Product not found.");
+    }
+
+    return product;
+};
+
 module.exports = {
     createProduct,
     getProducts,
-    // getProductById,
+    getProductById,
     // updateProduct,
     // archiveProduct
 };
