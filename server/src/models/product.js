@@ -80,7 +80,16 @@ const productSchema = new mongoose.Schema({
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: {
+        type: Date,
+        default: null
     }
+
 }, {timestamps: true});
 
 productSchema.index({ business: 1, sku: 1 }, { unique: true});
