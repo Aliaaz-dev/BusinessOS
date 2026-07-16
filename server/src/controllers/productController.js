@@ -63,8 +63,53 @@ const getProductById = async (req, res) => {
     }
 };
 
+const updateProduct = async (req, res) => {
+    try {
+        const product = await ProductService.updateProduct(
+            req.user,
+            req.params.id,
+            req.body
+        );
+
+         res.status(200).json({
+            success: true,
+            message: "Product updated successfully.",
+            data: product
+        });
+
+    } catch ( error ) {
+         res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+const deleteProduct = async (req, res) => {
+    try {
+        const product = await ProductService.deleteProduct(
+            req.user,
+            req.params.id
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Product deleted successfully.",
+            data: product
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createProduct,
     getProducts,
-    getProductById
+    getProductById,
+    updateProduct,
+    deleteProduct
 };

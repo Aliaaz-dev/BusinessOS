@@ -30,19 +30,18 @@ router.get(
     ProductController.getProductById
 );
 
-// router.put(
-//     "/:id",
-//     authMiddleware,
-//     roleMiddleware("owner", "manager"),
-//     validate(updateProductSchema),
-//     ProductController.updateProduct
-// );
+router.put(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("owner", "manager"),
+    ProductController.updateProduct
+);
 
-// router.patch(
-//     "/:id/archive",
-//     authMiddleware,
-//     roleMiddleware("owner"),
-//     ProductController.archiveProduct
-// );
+router.patch(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("owner"),
+    ProductController.deleteProduct
+);
 
 module.exports = router;
